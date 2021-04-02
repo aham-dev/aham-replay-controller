@@ -1,6 +1,6 @@
 <template>
     <v-container fluid fill-height>
-        <v-card width="310" id="controller-card">
+        <v-card width="310" id="controller-card" rounded class="rounded-lg">
             <v-container fluid fill-height >
                 <v-row id="top-bar" justify="space-between" align="center">
                     <v-col>관전 뷰어 리모컨 </v-col>
@@ -97,8 +97,8 @@ export default class Controller extends Vue {
     /* background-color: #689fff; */
     background-image: linear-gradient(to bottom, #689fff, #4ab9ce);
     height: 54px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     color: white;
     font-size: 15px;
 }

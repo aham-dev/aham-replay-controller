@@ -37,7 +37,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-main>
+    <v-main style="background-color: black;">
       <Controller/>
     </v-main>
   </v-app>
