@@ -18,8 +18,9 @@
                             <v-radio color="#4ab9ce" label="탑뷰" value="top"></v-radio>
                     </v-radio-group>
                 </v-row>
-                <v-row style="height: 240px;">
-                    <TopView />
+                <v-row style="height: 240px;" justify="center">
+                    <TopView v-if="viewMode=='top'"/>
+                    <FollowView v-else-if="viewMode=='follow'"/>
                 </v-row>
                 <v-row>
                     <v-divider/>
@@ -63,20 +64,25 @@
 <script lang="ts">
 import {Vue, Component, Watch} from 'vue-property-decorator';
 import TopView from "./TopView/TopView.vue";
+import FollowView from "./FollowView/FollowView.vue";
+import { Mutation } from 'vuex-class';
 
 @Component({
     components: {
-        TopView
+        TopView,
+        FollowView
     }
 })
 export default class Controller extends Vue {
 
     //top and follow mode?
     viewMode = "top";
+    @Mutation('changeViewMode') changeViewMode: any;
 
     @Watch('viewMode')
     onModeChange(){
         console.log(this.viewMode);
+        this.changeViewMode(this.viewMode);
     }
 
     goToDownload(){

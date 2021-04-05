@@ -1,39 +1,39 @@
 <template>
-    <v-container fluid fill-height>
-        <v-row justify="space-between" class="px-2">
-            <v-col>
-                <GridController />
-            </v-col>
+    <v-container >
+        <v-row justify="center" align="center" class="px-2">
+            <v-col></v-col>
             <v-col >
                 <HeightController />
             </v-col>
+            <v-col></v-col>
         </v-row>
     </v-container>
 </template>
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import GridController from "./GridController.vue";
 import HeightController from "@/components/Controller/General/HeightController.vue";
 import axios from 'axios';
 
 @Component({
     components: {
-        GridController,
         HeightController
     }
 })
-export default class TopView extends Vue {
+export default class FollowView extends Vue {
 
     //top and follow mode?
+
     mounted(){
+
         axios.post("https://127.0.0.1:2999/replay/render", {
-              cameraMode: 'fps',
+              cameraMode: 'top',
             })
             .then(response => {
                 console.log('Camera Position:', response.data.cameraPosition);
             })
             .catch(err => console.log(err));
+
     }
     
 }

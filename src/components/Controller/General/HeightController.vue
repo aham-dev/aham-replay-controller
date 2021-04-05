@@ -2,13 +2,13 @@
     <div id="height-container" class="ma-0">
         <div 
             class="button-top button d-flex justify-center align-center"
-            @click="viewMode=='follow'?alterFieldOfView(1):alterCameraPosition(axisModifierUp)"
+            @click="viewMode=='follow'?alterFieldOfView(-1):alterCameraPosition(axisModifierUp)"
         >
             <v-img :src="require('@/assets/plus.png')" width="48" height="48"/>
         </div>
         <div 
             class="button-bottom button d-flex justify-center align-center"
-            @click="'follow'?alterFieldOfView(-1):alterCameraPosition(axisModifierDown)"
+            @click="viewMode=='follow'?alterFieldOfView(1):alterCameraPosition(axisModifierDown)"
         >
             <v-img :src="require('@/assets/minus.png')" width="48" height="48"/>
         </div>
