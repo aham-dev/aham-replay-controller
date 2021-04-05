@@ -13,7 +13,9 @@ export default new Vuex.Store({
   },
   mutations: {
     changeViewMode(state, newMode){
+
       state.viewMode=newMode;
+      console.log('state view mode is ', state.viewMode);
     }
   },
   actions: {

@@ -105,9 +105,8 @@ export default class GridController extends Vue {
         return require(url);
     }
 
-    helloWorld(){
-        console.log('hello world');
-    }
+    
+
     
 }
 

@@ -81,12 +81,17 @@ export default class Controller extends Vue {
 
     @Watch('viewMode')
     onModeChange(){
-        console.log(this.viewMode);
+        // console.log('ASDKJFNASDKFJNASDFJKNASDFKJASNDFKJASDNF');
+        // console.log(this.viewMode);
         this.changeViewMode(this.viewMode);
     }
 
     goToDownload(){
-        window.location.href = "https://github.com/ahamcorp/LoLClientConfigure/releases/download/v0.1.0/LOLClientConfigureSetup.exe";
+        window.location.href = "http://bit.ly/aham_lolconfig_latest";
+    }
+
+    created(){
+        console.log('CREATED');
     }
     
 }

@@ -22,7 +22,7 @@ import axios from 'axios';
 })
 export default class FollowView extends Vue {
 
-    //top and follow mode?
+    
 
     mounted(){
 
