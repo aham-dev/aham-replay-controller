@@ -14,6 +14,7 @@
 import {Vue, Component} from 'vue-property-decorator';
 import HeightController from "@/components/Controller/General/HeightController.vue";
 import axios from 'axios';
+import {Action} from 'vuex-class';
 
 @Component({
     components: {
@@ -22,7 +23,33 @@ import axios from 'axios';
 })
 export default class FollowView extends Vue {
 
-    
+    keyStatuses: any = {};
+
+    @Action('alterFieldOfView') alterFieldOfView: any;
+
+    handleKeyDown(event: any) {
+        this.keyStatuses[event.key] = true;
+        switch (event.key){
+            case 'ArrowUp':
+                if (this.keyStatuses.Shift){
+                    this.alterFieldOfView(-1);
+                }
+                break;
+            case 'ArrowDown':
+                if (this.keyStatuses.Shift){
+                    this.alterFieldOfView(1);
+                }
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    handleKeyUp(event: any){
+        this.keyStatuses[event.key] = false;
+    }
+
 
     mounted(){
 
@@ -33,6 +60,18 @@ export default class FollowView extends Vue {
                 console.log('Camera Position:', response.data.cameraPosition);
             })
             .catch(err => console.log(err));
+
+        document.onkeydown=null;
+        document.onkeyup=null;
+
+        document.addEventListener("keydown", this.handleKeyDown);
+        document.addEventListener("keyup", this.handleKeyUp);
+
+    }
+
+    beforeDestroy(){
+        document.removeEventListener("keydown", this.handleKeyDown);
+        document.removeEventListener("keyup", this.handleKeyUp);
 
     }
     

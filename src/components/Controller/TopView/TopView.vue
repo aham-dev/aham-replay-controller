@@ -64,29 +64,12 @@ export default class TopView extends Vue {
     }
 
 
-    @Watch('viewMode')
-    onViewModeChange(newVal: any){
-        console.log('trigger');
-        if (newVal==="top"){
-            console.log('top mode set');
-            document.onkeydown=null;
-            document.onkeyup=null;
-
-            document.addEventListener("keydown", this.handleKeyDown);
-            document.addEventListener("keyup", this.handleKeyUp);
-
-        } else {
-            document.removeEventListener("keydown", this.handleKeyDown);
-            document.removeEventListener("keyup", this.handleKeyUp);
-        }
-    }
-
     //top and follow mode?
     handleKeyDown = (event: any) => {
         
-        //console.log(event.code);
-        this.keyStatuses[event.code]=true;
-        switch (event.code){
+        //console.log(event.code, event.key, event);
+        this.keyStatuses[event.key]=true;
+        switch (event.key){
             case "ArrowLeft":
                 //console.log('arrow left');
                 if (this.keyStatuses.ArrowUp){
@@ -109,9 +92,11 @@ export default class TopView extends Vue {
                 break;
             case "ArrowUp":
                 //console.log('arrow up');
-                if (this.keyStatuses.right){
+                if (this.keyStatuses.Shift){
+                    this.alterCameraPosition([{axis: 'y', modifier: -1}])
+                } else if (this.keyStatuses.ArrowRight){
                     this.alterCameraPosition(this.directions['up-right']['modifiers']);
-                } else if (this.keyStatuses.left){
+                } else if (this.keyStatuses.ArrowLeft){
                     this.alterCameraPosition(this.directions['up-left']['modifiers']);
                 } else {
                     this.alterCameraPosition(this.directions['up']['modifiers']);
@@ -119,9 +104,11 @@ export default class TopView extends Vue {
                 break;
             case "ArrowDown":
                 //console.log('arrow down');
-                if (this.keyStatuses.right){
+                if (this.keyStatuses.Shift){
+                    this.alterCameraPosition([{axis: 'y', modifier: 1}])
+                } else if (this.keyStatuses.ArrowRight){
                     this.alterCameraPosition(this.directions['down-right']['modifiers']);
-                } else if (this.keyStatuses.left){
+                } else if (this.keyStatuses.ArrowLeft){
                     this.alterCameraPosition(this.directions['down-left']['modifiers']);
                 } else {
                     this.alterCameraPosition(this.directions['down']['modifiers']);
@@ -133,7 +120,7 @@ export default class TopView extends Vue {
     }
 
     handleKeyUp = (event: any) => {
-        this.keyStatuses[event.code] = false;
+        this.keyStatuses[event.key] = false;
     }
 
     beforeDestroy(){
