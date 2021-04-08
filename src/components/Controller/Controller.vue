@@ -1,5 +1,4 @@
 <template>
-    <v-container fluid fill-height>
         <v-card width="310" id="controller-card" rounded class="rounded-lg">
             <v-container fluid fill-height >
                 <v-row id="top-bar" justify="space-between" align="center">
@@ -14,8 +13,8 @@
                 </v-row>
                 <v-row>
                     <v-radio-group row class="px-3" style="width:100%;" v-model="viewMode">
-                            <v-radio color="#4ab9ce" label="관전뷰" value="follow" class="pr-10"></v-radio>
-                            <v-radio color="#4ab9ce" label="탑뷰" value="top"></v-radio>
+                        <v-radio color="#4ab9ce" label="관전뷰" value="follow" class="pr-10"></v-radio>
+                        <v-radio color="#4ab9ce" label="탑뷰" value="top"></v-radio>
                     </v-radio-group>
                 </v-row>
                 <v-row style="height: 240px;" justify="center">
@@ -57,7 +56,6 @@
                 </v-row>
             </v-container>
         </v-card>
-    </v-container>
     
 </template>
 
@@ -66,6 +64,7 @@ import {Vue, Component, Watch} from 'vue-property-decorator';
 import TopView from "./TopView/TopView.vue";
 import FollowView from "./FollowView/FollowView.vue";
 import { Mutation } from 'vuex-class';
+// const {ipcRenderer} = require('electron');
 
 @Component({
     components: {
@@ -92,6 +91,8 @@ export default class Controller extends Vue {
 
     created(){
         console.log('CREATED');
+
+        // ipcRenderer.send('resize', 'wo');
     }
     
 }
