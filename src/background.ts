@@ -1,15 +1,35 @@
 
 
-import { app, protocol, BrowserWindow, ipcMain} from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-const isDevelopment = process.env.NODE_ENV !== 'production'
+import { app, protocol, BrowserWindow, ipcMain} from 'electron';
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import * as path from 'path';
+const regedit = require('regedit');
+regedit.setExternalVBSLocation('resources/regedit/vbs');
+const ini = require('ini');
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
-])
+]);
 
+function enableAPI(lolDir: string) {
+  const paths = ['/Config/game.cfg', '/Game/Config/game.cfg', 'DATA/CFG/game.cfg'];
+  paths.forEach(function (value: string) {
+    let lolPath = lolDir + value;
+    if(existsSync(lolPath) == true) {
+      let config = ini.parse(readFileSync(lolPath, 'utf-8'));
+      config.General.EnableReplayApi = 1;
+      writeFileSync(lolPath, ini.stringify(config, { section: 'General' }));
+      
+      console.log(`Updated ${lolPath}`);
+    } else {
+      // console.log('file not found');
+    }
+  })
+}
 
 async function createWindow() {
   // Create the browser window.
@@ -40,6 +60,37 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
+  }
+
+  if(process.platform == 'win32') {
+    regedit.list('HKLM\\SOFTWARE\\WOW6432Node\\Riot Games, Inc', function(err: any, result: any) {
+      // this logic was not tested because I couldn't find the registry.
+      for(let key in result) {
+        for(let vk in result[key].values) {
+          if(vk.endsWith('/Location')) {
+            let lolDir = path.dirname(result[key].values[vk]);
+            if(existsSync(lolDir)) {
+              enableAPI(lolDir);
+            }
+          }
+        }
+      }
+    });
+
+    regedit.list('HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache', function(err: any, result: any) {
+      for(let key in result) {
+        for(let vk in result[key].values) {
+          if(vk.includes('LeagueClient.exe')) {
+            let lolDir = path.dirname(vk);
+            if(existsSync(lolDir)) {
+              enableAPI(lolDir);
+            }
+          }
+        }
+      }
+    });
+  } else if(process.platform == 'darwin') {
+
   }
 }
 
