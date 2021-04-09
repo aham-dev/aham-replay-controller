@@ -1,6 +1,11 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import controllerStore from './controllerStore';
+const electron = require('electron');
+const remote = require('electron').remote;
+const {ipcRenderer} = require('electron');
 
 Vue.use(Vuex)
 
@@ -9,18 +14,39 @@ export default new Vuex.Store({
     viewMode: "top",
     cameraPositionIncrement: 800,
     fieldOfViewIncrement: 10,
-    healthOn: true
+    healthOn: true,
+    open: false,
+    healthToggle: true,
+    scoreToggle: true
   },
   mutations: {
+    mutateValue(state, payload){
+        const {property, value} = payload;
+        state[property] = value;
+    },
     changeViewMode(state, newMode){
+        state.viewMode=newMode;
+        console.log('newmode ', newMode);
 
-      state.viewMode=newMode;
-      console.log('state view mode is ', state.viewMode);
+        axios.post("https://127.0.0.1:2999/replay/render", {
+              cameraMode: newMode=="top"?'fps':'top'
+            })
+            .then(response => {
+                console.log('Camera Position:', response.data.cameraPosition);
+            })
+            .catch(err => console.log(err));
+    },
+    toggleController(state){
+        state.open = !state.open;
     }
   },
   actions: {
-
-
+    closeWindow(){
+      // console.log('HAHAHAHAH', electron, remote, ipcRenderer);
+      // const window = remote.getCurrentWindow();
+      // window.close();
+      ipcRenderer.send('close-player');
+    },
     toggleHealth({state}){
       const changeObject: any = {};
       const healthBarItems = ["Champions", "Minions", "Pets", "Structures", "Wards"];
@@ -81,5 +107,7 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    controllerStore: controllerStore
+
   }
 })

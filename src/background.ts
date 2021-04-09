@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow, ipcMain} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+require('update-electron-app')();
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -17,7 +18,8 @@ async function createWindow() {
     width: 310,
     // minWidth: 400,
     minWidth: 310,
-    height: 600,
+    height: 627,
+    // minHeight: 627,
     frame: false,
     webPreferences: {
       // 'web-security': false,
@@ -28,6 +30,13 @@ async function createWindow() {
       // @ts-ignore: Unreachable code error
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
+  })
+
+
+  ipcMain.on('close-player', ()=> {
+    console.log('now closing');
+    win.close();
+    
   })
 
   win.setMenuBarVisibility(false);
@@ -46,22 +55,29 @@ async function createWindow() {
 // app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
-
+// app.allowRendererProcessReuse = false
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  console.log('needs to quit');
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  // if (process.platform !== 'darwin') {
+  //   console.log('gone in here');
+  //   app.quit()
+  // }
+  app.quit();
 })
+
+
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -74,16 +90,19 @@ app.on('ready', async () => {
     } catch (e) {
       console.error('Vue Devtools failed to install:', e.toString())
     }
+
+    // app.allowRendererProcessReuse = false;
   }
 
 
-  createWindow()
+  createWindow();
 
-  ipcMain.on('resize', (event, arg) => {
-    console.log('askdjbfsdf');
-    
-  })
+    // ipcMain.on('resize', (event, arg) => {
+    //   console.log('askdjbfsdf');
+      
+    // })
 })
+
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

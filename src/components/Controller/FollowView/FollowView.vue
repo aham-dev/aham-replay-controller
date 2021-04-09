@@ -12,9 +12,11 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import HeightController from "@/components/Controller/General/HeightController.vue";
+import HeightController from "../HeightController.vue";
 import axios from 'axios';
-import {Action} from 'vuex-class';
+import {namespace} from 'vuex-class';
+
+const controllerStore = namespace("controllerStore");
 
 @Component({
     components: {
@@ -25,7 +27,7 @@ export default class FollowView extends Vue {
 
     keyStatuses: any = {};
 
-    @Action('alterFieldOfView') alterFieldOfView: any;
+    @controllerStore.Action('alterFieldOfView') alterFieldOfView: any;
 
     handleKeyDown(event: any) {
         this.keyStatuses[event.key] = true;
@@ -42,7 +44,6 @@ export default class FollowView extends Vue {
                 break;
             default:
                 break;
-
         }
     }
 

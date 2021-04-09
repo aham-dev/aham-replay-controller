@@ -2,13 +2,13 @@
     <div id="height-container" class="ma-0">
         <div 
             class="button-top button d-flex justify-center align-center"
-            @click="viewMode=='follow'?alterFieldOfView(1):alterCameraPosition(axisModifierUp)"
+            @click="viewMode=='follow'?alterFieldOfView(-1):alterCameraPosition(axisModifierUp)"
         >
             <v-img :src="require('@/assets/plus.png')" width="48" height="48"/>
         </div>
         <div 
             class="button-bottom button d-flex justify-center align-center"
-            @click="'follow'?alterFieldOfView(-1):alterCameraPosition(axisModifierDown)"
+            @click="viewMode=='follow'?alterFieldOfView(1):alterCameraPosition(axisModifierDown)"
         >
             <v-img :src="require('@/assets/minus.png')" width="48" height="48"/>
         </div>
@@ -17,15 +17,17 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import {Action, State} from 'vuex-class';
+import {namespace} from 'vuex-class';
+
+const controllerStore = namespace('controllerStore');
 
 @Component({})
 export default class HeightController extends Vue {
 
-    @State('viewMode') viewMode: any;
+    @controllerStore.State('viewMode') viewMode: any;
 
-    @Action('alterFieldOfView') alterFieldOfView: any;
-    @Action('alterCameraPosition') alterCameraPosition: any;
+    @controllerStore.Action('alterFieldOfView') alterFieldOfView: any;
+    @controllerStore.Action('alterCameraPosition') alterCameraPosition: any;
 
     axisModifierUp: any = [{axis: 'y', modifier: -1}];
     axisModifierDown: any = [{axis: 'y', modifier: 1}];
@@ -37,7 +39,7 @@ export default class HeightController extends Vue {
     //top and follow mode?
     gridInfo: any[][] = [
         [
-            {imageUrl: '@/assets/up-left-arrow.png', axisModifiers: [{axis: 'x', modifier: -1}, {axis: 'z', modifier: 1}] }, 
+            { axisModifiers: [{axis: 'x', modifier: -1}, {axis: 'z', modifier: 1}] }, 
             {imageUrl: '@/assets/up-arrow.png', axisModifiers: [{axis: 'z', modifier: 1}]}, 
             {imageUrl: '@/assets/up-right-arrow.png', axisModifiers: [{axis: 'x', modifier: 1}, {axis: 'z', modifier: 1}]}
         ],
@@ -74,6 +76,10 @@ export default class HeightController extends Vue {
     border-radius: 10px;
     height: 180px;
     width: 64px;
+}
+
+.button {
+  cursor: pointer;
 }
 
 .button-top {

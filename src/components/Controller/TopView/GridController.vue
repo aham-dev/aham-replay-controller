@@ -1,18 +1,26 @@
 <template>
     <div id="grid-container">
         <div
-            class="grid-row d-flex flex-row bot-border"
+            class="button grid-row d-flex flex-row bot-border"
             align="center" 
             justify="center"
         >
-            <div class="col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[0][0].axisModifiers)"> 
+            <div 
+                class="button col d-flex justify-center align-center" 
+                @click="alterCameraPosition(gridInfo[0][0].axisModifiers)"
+                style="border-top-left-radius: 8px;"
+            > 
                 <v-img :src="require('@/assets/up-left-arrow.png')" />
 
             </div>
-            <div class="col center-col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[0][1].axisModifiers)">
+            <div class="button col center-col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[0][1].axisModifiers)">
                 <v-img :src="require('@/assets/up-arrow.png')" />
             </div>
-            <div class="col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[0][2].axisModifiers)">
+            <div 
+                class="button col d-flex justify-center align-center" 
+                @click="alterCameraPosition(gridInfo[0][2].axisModifiers)"
+                style="border-top-right-radius: 8px;"
+            >
                 <v-img :src="require('@/assets/up-right-arrow.png')" />
             </div>
         </div>
@@ -21,12 +29,12 @@
             align="center" 
             justify="center"
         >
-            <div class="col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[1][0].axisModifiers)"> 
+            <div class="button col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[1][0].axisModifiers)"> 
                 <v-img :src="require('@/assets/left-arrow.png')" />
             </div>
             <div id="center-panel" class="col center-col" >
             </div>
-            <div class="col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[1][2].axisModifiers)">
+            <div class="button col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[1][2].axisModifiers)">
                 <v-img :src="require('@/assets/right-arrow.png')" />
             </div>
         </div>
@@ -35,13 +43,21 @@
             align="center" 
             justify="center"
         >
-            <div class="col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[2][0].axisModifiers)"> 
+            <div 
+                class="button col d-flex justify-center align-center" 
+                @click="alterCameraPosition(gridInfo[2][0].axisModifiers)"
+                style="border-bottom-left-radius: 8px;"
+            > 
                 <v-img :src="require('@/assets/down-left-arrow.png')" />
             </div>
-            <div class="col center-col justify-center align-center" @click="alterCameraPosition(gridInfo[2][1].axisModifiers)">
-                <v-img :src="require('@/assets/down-arrow.png')" />
+            <div class="button col center-col justify-center align-center" @click="alterCameraPosition(gridInfo[2][1].axisModifiers)">
+                <v-img src="../../../assets/down-arrow.png" />
             </div>
-            <div class="col d-flex justify-center align-center" @click="alterCameraPosition(gridInfo[2][2].axisModifiers)">
+            <div 
+                class="button col d-flex justify-center align-center" 
+                @click="alterCameraPosition(gridInfo[2][2].axisModifiers)"
+                style="border-bottom-right-radius: 8px;"
+            >
                 <v-img :src="require('@/assets/down-right-arrow.png')" />
             </div>
         </div>
@@ -68,13 +84,15 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import {Action} from 'vuex-class';
+import {namespace} from 'vuex-class';
+
+const controllerStore = namespace('controllerStore');
 
 @Component({})
 export default class GridController extends Vue {
 
 
-    @Action('alterCameraPosition') alterCameraPosition: any;
+    @controllerStore.Action('alterCameraPosition') alterCameraPosition: any;
 
     axisModifiers: any[][] = [
         [{axis: 'x', modifier: 1}]
@@ -83,19 +101,19 @@ export default class GridController extends Vue {
     //top and follow mode?
     gridInfo: any[][] = [
         [
-            {imageUrl: '@/assets/up-left-arrow.png', axisModifiers: [{axis: 'x', modifier: -1}, {axis: 'z', modifier: 1}] }, 
-            {imageUrl: '@/assets/up-arrow.png', axisModifiers: [{axis: 'z', modifier: 1}]}, 
-            {imageUrl: '@/assets/up-right-arrow.png', axisModifiers: [{axis: 'x', modifier: 1}, {axis: 'z', modifier: 1}]}
+            {axisModifiers: [{axis: 'x', modifier: -1}, {axis: 'z', modifier: 1}] }, 
+            {axisModifiers: [{axis: 'z', modifier: 1}]}, 
+            {axisModifiers: [{axis: 'x', modifier: 1}, {axis: 'z', modifier: 1}]}
         ],
         [
-            {imageUrl: '@/assets/left-arrow.png', axisModifiers: [{axis: 'x', modifier: -1}]}, 
+            {axisModifiers: [{axis: 'x', modifier: -1}]}, 
             {}, 
-            {imageUrl: '@/assets/right-arrow.png', axisModifiers: [{axis: 'x', modifier: 1}] }
+            {axisModifiers: [{axis: 'x', modifier: 1}] }
         ],
         [
-            {imageUrl: '@/assets/down-left-arrow.png', axisModifiers: [{axis: 'x', modifier: -1}, {axis: 'z', modifier: -1}]}, 
-            {imageUrl: '@/assets/down-arrow.png', axisModifiers: [{axis: 'z', modifier: -1}]}, 
-            {imageUrl: '@/assets/down-right-arrow.png', axisModifiers: [{axis: 'x', modifier: 1}, {axis: 'z', modifier: -1}]}
+            {axisModifiers: [{axis: 'x', modifier: -1}, {axis: 'z', modifier: -1}]}, 
+            {axisModifiers: [{axis: 'z', modifier: -1}]}, 
+            {axisModifiers: [{axis: 'x', modifier: 1}, {axis: 'z', modifier: -1}]}
         ]
 
     ]
@@ -113,6 +131,10 @@ export default class GridController extends Vue {
 </script>
 
 <style scoped>
+
+.button {
+    cursor: pointer;
+}
 
 #grid-container {
     border: solid 1px #d1d5de;

@@ -2,7 +2,7 @@
 
   <v-app>
     <!-- <v-main style="background-color: black;"> -->
-      <Controller/>
+      <ReplayController/>
 <!--       
     </v-main> -->
   </v-app>
@@ -11,14 +11,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
-import Controller from "@/components/Controller/Controller.vue";
+import ReplayController from "@/components/Controller/ReplayController.vue";
 
 export default Vue.extend({
   name: 'App',
 
   components: {
     // HelloWorld,
-    Controller
+    ReplayController
   },
 
   data: () => ({

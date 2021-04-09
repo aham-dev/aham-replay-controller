@@ -12,11 +12,13 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component, Watch} from 'vue-property-decorator';
+import {Vue, Component} from 'vue-property-decorator';
 import GridController from "./GridController.vue";
-import HeightController from "@/components/Controller/General/HeightController.vue";
+import HeightController from "../HeightController.vue";
 import axios from 'axios';
-import {Action, Mutation, State} from 'vuex-class';
+import {namespace} from 'vuex-class';
+
+const controllerStore = namespace("controllerStore");
 
 @Component({
     components: {
@@ -26,8 +28,8 @@ import {Action, Mutation, State} from 'vuex-class';
 })
 export default class TopView extends Vue {
 
-    @Action('alterCameraPosition') alterCameraPosition: any;
-    @State('viewMode') viewMode: any;
+    @controllerStore.Action('alterCameraPosition') alterCameraPosition: any;
+    @controllerStore.State('viewMode') viewMode: any;
 
     directions = {
         'up': {
