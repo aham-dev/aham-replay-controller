@@ -9,7 +9,11 @@ const regedit = require('regedit');
 regedit.setExternalVBSLocation('resources/regedit/vbs');
 const ini = require('ini');
 const isDevelopment = process.env.NODE_ENV !== 'production';
-require('update-electron-app')();
+import { autoUpdater } from "electron-updater";
+
+// require('update-electron-app')();
+
+// require('update-electron-app')();
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
