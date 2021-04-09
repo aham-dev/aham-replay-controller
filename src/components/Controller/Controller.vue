@@ -66,6 +66,7 @@ import TopView from "./TopView/TopView.vue";
 import FollowView from "./FollowView/FollowView.vue";
 import { Mutation } from 'vuex-class';
 const electron = require('electron');
+const {ipcRenderer} = require('electron');
 // const {remote} = require('electron');
 
 
@@ -112,6 +113,15 @@ export default class Controller extends Vue {
         console.log('CREATED');
 
         // ipcRenderer.send('resize', 'wo');
+        ipcRenderer.on('update_available', () => {
+            ipcRenderer.removeAllListeners('update_available');
+            alert('An update is available');
+        });
+
+        ipcRenderer.on('update_downloaded', () => {
+            ipcRenderer.removeAllListeners('update_downloaded');
+            alert("An update has been downloaded");
+        });
     }
 
     // drag(){

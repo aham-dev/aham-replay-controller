@@ -56,12 +56,32 @@ async function createWindow() {
     }
   })
 
+  //set up updates
+  win.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+    // 
+  });
+
+  autoUpdater.on('update-available', () => {
+    console.log('AN UPDATE IS AVAILABLE');
+    // alert('an update is available');
+    win.webContents.send('update_available');
+  });
+  autoUpdater.on('update-downloaded', () => {
+    console.log('AN UPDATE HAS BEEN DOWNLOADED');
+    win.webContents.send('update_downloaded');
+  });
 
   ipcMain.on('close-player', ()=> {
     console.log('now closing');
     win.close();
     
   })
+
+  ipcMain.on('app_version', (event) => {
+    console.log('the version be ', app.getVersion());
+    event.sender.send('app_version', { version: app.getVersion() });
+  });
 
   win.setMenuBarVisibility(false);
 
@@ -105,6 +125,8 @@ async function createWindow() {
   } else if(process.platform == 'darwin') {
 
   }
+
+  console.log('test');
 }
 
 // app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
@@ -149,6 +171,8 @@ app.on('ready', async () => {
     // app.allowRendererProcessReuse = false;
   }
 
+  
+
 
   createWindow();
 
@@ -157,6 +181,9 @@ app.on('ready', async () => {
       
     // })
 })
+
+
+
 
 
 // Exit cleanly on request from parent process in development mode.

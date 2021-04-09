@@ -10,23 +10,28 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "release": "electron-builder"
+    "release": "electron-builder",
+    "build1": "electron-builder build --win --publish never",
+    "deploy1": "electron-builder build --win --publish always"
   },
-  "main": "background.js",
+  "main": "background.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ahamcorp/aham-replay-controller.git"
   },
   "build": {
-    "publish": [{
+    "publish": [
+      {
         "provider": "github",
         "owner": "patrickhahn497",
         "repo": "ahamcorp/aham-replay-controller"
-    }]
+      }
+    ]
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "core-js": "^3.10.0",
+    "core-js": "^3.10.1",
+    "electron-builder": "^22.10.5",
     "electron-log": "^4.3.3",
     "electron-updater": "^4.3.8",
     "fs": "0.0.1-security",
