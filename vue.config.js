@@ -4,7 +4,15 @@ module.exports = {
   ],
   pluginOptions: {
     electronBuilder: {
-        nodeIntegration: true
+      nodeIntegration: true,
+      builderOptions: {
+        publish: [
+          {
+            provider: "github",
+            owner: "patrickhahn497"
+          }
+        ]
+      }
     }
   }
 }
